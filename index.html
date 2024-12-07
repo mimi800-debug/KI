@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot mit deutschen Wörtern</title>
+    <style>
+        /* Styling für den Chatbot */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f3f4f6;
+        }
+        .chat-container {
+            width: 400px;
+            max-width: 90%;
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .chat-header {
+            background: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .chat-messages {
+            flex: 1;
+            padding: 10px;
+            overflow-y: auto;
+            background: #f9f9f9;
+        }
+        .chat-message {
+            margin: 5px 0;
+        }
+        .chat-message.user {
+            text-align: right;
+            color: #333;
+        }
+        .chat-message.bot {
+            text-align: left;
+            color: #4CAF50;
+        }
+        .chat-input-container {
+            display: flex;
+            border-top: 1px solid #ddd;
+        }
+        .chat-input {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            font-size: 16px;
+            outline: none;
+        }
+        .send-button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 0 15px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .send-button:hover {
+            background: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+<div class="chat-container">
+    <div class="chat-header">Chatbot</div>
+    <div class="chat-messages" id="chatMessages"></div>
+    <div class="chat-input-container">
+        <input type="text" class="chat-input" id="chatInput" placeholder="Schreibe etwas...">
+        <button class="send-button" id="sendButton">Senden</button>
+    </div>
+</div>
+
+<script>
+    // URL zur deutschen Wortliste (z. B. über ein Repository)
+    const WORDS_URL = 'https://raw.githubusercontent.com/davidemarcoli/deutschwortliste/main/wortliste.txt';
+
+    // Speicher für die Wörter
+    let wordList = [];
+
+    // HTML-Elemente
+    const chatMessages = document.getElementById("chatMessages");
+    const chatInput = document.getElementById("chatInput");
+    const sendButton = document.getElementById("sendButton");
+
+    // Wortliste laden
+    fetch(WORDS_URL)
+        .then(response => response.text())
+        .then(text => {
+            wordList = text.split("\n").filter(word => word.trim().length > 0); // Text in Array umwandeln
+            console.log('Wortliste geladen:', wordList.length, 'Wörter');
+        });
+
+    // Funktion, um eine Nachricht hinzuzufügen
+    function addMessage(text, sender) {
+        const messageElement = document.createElement("div");
+        messageElement.classList.add("chat-message", sender);
+        messageElement.textContent = text;
+        chatMessages.appendChild(messageElement);
+        chatMessages.scrollTop = chatMessages.scrollHeight; // Scroll nach unten
+    }
+
+    // Klick-Event für den "Senden"-Button
+    sendButton.addEventListener("click", () => {
+        const userMessage = chatInput.value.trim();
+        if (userMessage === "") return; // Leere Eingaben ignorieren
+        addMessage(userMessage, "user"); // Nutzer-Nachricht hinzufügen
+
+        // Zufälliges Wort vom Bot hinzufügen
+        if (wordList.length > 0) {
+            const randomWord = wordList[Math.floor(Math.random() * wordList.length)];
+            setTimeout(() => {
+                addMessage(randomWord, "bot");
+            }, 500); // Verzögerung von 500ms für eine realistischere Interaktion
+        } else {
+            addMessage("Wörter werden noch geladen...", "bot");
+        }
+
+        chatInput.value = ""; // Eingabefeld zurücksetzen
+    });
+
+    // Enter-Taste zum Senden nutzen
+    chatInput.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+            sendButton.click();
+        }
+    });
+</script>
+
+</body>
+</html>
