@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chaotischer Chatbot</title>
+    <title>Chaotischer Geschichtenerzähler</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -81,7 +81,7 @@
 <body>
 
 <div class="chat-container">
-    <div class="chat-header">Chaotischer Chatbot</div>
+    <div class="chat-header">Chaotischer Geschichtenerzähler</div>
     <div class="chat-messages" id="chatMessages"></div>
     <div class="chat-input-container">
         <input type="text" class="chat-input" id="chatInput" placeholder="Schreibe etwas...">
@@ -90,15 +90,13 @@
 </div>
 
 <script>
-    // Quellen für chaotische Antworten
-    const words = [
-        "Käse", "Banane", "Mond", "unfassbar", "Chaos", "Explosion", "🦄", "42", "😂", "Würfel", "Glitzer", "🔥", "Kaffee"
-    ];
+    // Quellen für Geschichtenbausteine
+    const words = ["Käse", "Mond", "Explosion", "Einhorn", "Banane", "42", "Chaos", "Wolke"];
     const phrases = [
-        "Warum fragst du das?", "Die Antwort liegt im Käse 🧀.", "Ich bin ein Einhorn! 🦄", "42 ist die Antwort.",
-        "Das ist unlogisch.", "Ich explodiere gleich 💥!", "Komm wieder, wenn du Glitzer hast.", "😂 Haha, witzig!"
+        "Es war einmal ein", "Plötzlich erschien ein", "Dann passierte etwas Unfassbares:", 
+        "Keiner hätte gedacht, dass", "Am Ende blieb nur noch", "So endete die Geschichte von"
     ];
-    const emojis = ["🎲", "🔥", "🌀", "🌈", "⚡", "❄️", "🌋", "🌙", "⭐"];
+    const emojis = ["🌈", "🔥", "🌀", "🌙", "⭐", "⚡", "🍌", "🧀", "💥", "🦄"];
     
     // HTML-Elemente
     const chatMessages = document.getElementById("chatMessages");
@@ -110,20 +108,21 @@
         return arr[Math.floor(Math.random() * arr.length)];
     }
 
-    // Funktion, um eine chaotische Antwort zu generieren
-    function generateChaos() {
-        const randomWord = getRandomElement(words);
-        const randomPhrase = getRandomElement(phrases);
-        const randomEmoji = getRandomElement(emojis);
+    // Funktion, um eine chaotische Geschichte zu generieren
+    function generateChaoticStory() {
+        const storyLength = Math.floor(Math.random() * 5) + 3; // 3 bis 7 Sätze
+        let story = "";
 
-        // Kombiniere Wort, Phrase und Emoji chaotisch
-        const chaosPatterns = [
-            `${randomWord} ${randomEmoji}`,
-            `${randomPhrase} ${randomEmoji}`,
-            `${randomWord} und ${randomWord} ${randomEmoji}`,
-            `${randomPhrase} ${randomEmoji} ${randomWord}`,
-        ];
-        return getRandomElement(chaosPatterns);
+        for (let i = 0; i < storyLength; i++) {
+            const randomPhrase = getRandomElement(phrases);
+            const randomWord = getRandomElement(words);
+            const randomEmoji = getRandomElement(emojis);
+            story += `${randomPhrase} ${randomWord} ${randomEmoji}. `;
+        }
+
+        // Füge eine chaotische Wendung am Ende hinzu
+        story += `Und dann verschwand alles in einem Meer von ${getRandomElement(words)} ${getRandomElement(emojis)}.`;
+        return story;
     }
 
     // Funktion, um eine Nachricht hinzuzufügen
@@ -141,10 +140,10 @@
         if (userMessage === "") return; // Leere Eingaben ignorieren
         addMessage(userMessage, "user"); // Nutzer-Nachricht hinzufügen
 
-        // Bot gibt eine chaotische Antwort
+        // Bot generiert eine chaotische Geschichte
         setTimeout(() => {
-            const chaoticResponse = generateChaos();
-            addMessage(chaoticResponse, "bot");
+            const chaoticStory = generateChaoticStory();
+            addMessage(chaoticStory, "bot");
         }, 500); // Verzögerung von 500ms für eine realistischere Interaktion
 
         chatInput.value = ""; // Eingabefeld zurücksetzen
