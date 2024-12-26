@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chatbot mit deutschen Wörtern</title>
+    <title>Chaotischer Chatbot</title>
     <style>
-        /* Styling für den Chatbot */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -14,20 +13,21 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #f3f4f6;
+            background-color: #282c34;
+            color: white;
         }
         .chat-container {
             width: 400px;
             max-width: 90%;
-            background: #ffffff;
+            background: #1e1e1e;
             border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
             overflow: hidden;
             display: flex;
             flex-direction: column;
         }
         .chat-header {
-            background: #4CAF50;
+            background: #6200ea;
             color: white;
             padding: 10px 15px;
             text-align: center;
@@ -38,22 +38,23 @@
             flex: 1;
             padding: 10px;
             overflow-y: auto;
-            background: #f9f9f9;
+            background: #2e2e2e;
         }
         .chat-message {
             margin: 5px 0;
+            word-wrap: break-word;
         }
         .chat-message.user {
             text-align: right;
-            color: #333;
+            color: #ff9800;
         }
         .chat-message.bot {
             text-align: left;
-            color: #4CAF50;
+            color: #03dac6;
         }
         .chat-input-container {
             display: flex;
-            border-top: 1px solid #ddd;
+            border-top: 1px solid #444;
         }
         .chat-input {
             flex: 1;
@@ -61,9 +62,11 @@
             border: none;
             font-size: 16px;
             outline: none;
+            background: #1e1e1e;
+            color: white;
         }
         .send-button {
-            background: #4CAF50;
+            background: #6200ea;
             color: white;
             border: none;
             padding: 0 15px;
@@ -71,14 +74,14 @@
             font-size: 16px;
         }
         .send-button:hover {
-            background: #45a049;
+            background: #3700b3;
         }
     </style>
 </head>
 <body>
 
 <div class="chat-container">
-    <div class="chat-header">KI - Kaotische Interligenz</div>
+    <div class="chat-header">Chaotischer Chatbot</div>
     <div class="chat-messages" id="chatMessages"></div>
     <div class="chat-input-container">
         <input type="text" class="chat-input" id="chatInput" placeholder="Schreibe etwas...">
@@ -87,24 +90,41 @@
 </div>
 
 <script>
-    // URL zur deutschen Wortliste (z. B. über ein Repository)
-    const WORDS_URL = 'https://raw.githubusercontent.com/mimi800-debug/KI/52fc2f30086a376c12575c49a0fa37e126bb347f/words.txt';
-
-    // Speicher für die Wörter
-    let wordList = [];
-
+    // Quellen für chaotische Antworten
+    const words = [
+        "Käse", "Banane", "Mond", "unfassbar", "Chaos", "Explosion", "🦄", "42", "😂", "Würfel", "Glitzer", "🔥", "Kaffee"
+    ];
+    const phrases = [
+        "Warum fragst du das?", "Die Antwort liegt im Käse 🧀.", "Ich bin ein Einhorn! 🦄", "42 ist die Antwort.",
+        "Das ist unlogisch.", "Ich explodiere gleich 💥!", "Komm wieder, wenn du Glitzer hast.", "😂 Haha, witzig!"
+    ];
+    const emojis = ["🎲", "🔥", "🌀", "🌈", "⚡", "❄️", "🌋", "🌙", "⭐"];
+    
     // HTML-Elemente
     const chatMessages = document.getElementById("chatMessages");
     const chatInput = document.getElementById("chatInput");
     const sendButton = document.getElementById("sendButton");
 
-    // Wortliste laden
-    fetch(WORDS_URL)
-        .then(response => response.text())
-        .then(text => {
-            wordList = text.split("\n").filter(word => word.trim().length > 0); // Text in Array umwandeln
-            console.log('Wortliste geladen:', wordList.length, 'Wörter');
-        });
+    // Zufallsfunktion
+    function getRandomElement(arr) {
+        return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    // Funktion, um eine chaotische Antwort zu generieren
+    function generateChaos() {
+        const randomWord = getRandomElement(words);
+        const randomPhrase = getRandomElement(phrases);
+        const randomEmoji = getRandomElement(emojis);
+
+        // Kombiniere Wort, Phrase und Emoji chaotisch
+        const chaosPatterns = [
+            `${randomWord} ${randomEmoji}`,
+            `${randomPhrase} ${randomEmoji}`,
+            `${randomWord} und ${randomWord} ${randomEmoji}`,
+            `${randomPhrase} ${randomEmoji} ${randomWord}`,
+        ];
+        return getRandomElement(chaosPatterns);
+    }
 
     // Funktion, um eine Nachricht hinzuzufügen
     function addMessage(text, sender) {
@@ -121,15 +141,11 @@
         if (userMessage === "") return; // Leere Eingaben ignorieren
         addMessage(userMessage, "user"); // Nutzer-Nachricht hinzufügen
 
-        // Zufälliges Wort vom Bot hinzufügen
-        if (wordList.length > 0) {
-            const randomWord = wordList[Math.floor(Math.random() * wordList.length)];
-            setTimeout(() => {
-                addMessage(randomWord, "bot");
-            }, 500); // Verzögerung von 500ms für eine realistischere Interaktion
-        } else {
-            addMessage("Wörter werden noch geladen...", "bot");
-        }
+        // Bot gibt eine chaotische Antwort
+        setTimeout(() => {
+            const chaoticResponse = generateChaos();
+            addMessage(chaoticResponse, "bot");
+        }, 500); // Verzögerung von 500ms für eine realistischere Interaktion
 
         chatInput.value = ""; // Eingabefeld zurücksetzen
     });
