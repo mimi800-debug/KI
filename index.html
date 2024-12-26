@@ -1,161 +1,22 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chaotischer Geschichtenerzähler</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #282c34;
-            color: white;
-        }
-        .chat-container {
-            width: 400px;
-            max-width: 90%;
-            background: #1e1e1e;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
-        .chat-header {
-            background: #6200ea;
-            color: white;
-            padding: 10px 15px;
-            text-align: center;
-            font-size: 18px;
-            font-weight: bold;
-        }
-        .chat-messages {
-            flex: 1;
-            padding: 10px;
-            overflow-y: auto;
-            background: #2e2e2e;
-        }
-        .chat-message {
-            margin: 5px 0;
-            word-wrap: break-word;
-        }
-        .chat-message.user {
-            text-align: right;
-            color: #ff9800;
-        }
-        .chat-message.bot {
-            text-align: left;
-            color: #03dac6;
-        }
-        .chat-input-container {
-            display: flex;
-            border-top: 1px solid #444;
-        }
-        .chat-input {
-            flex: 1;
-            padding: 10px;
-            border: none;
-            font-size: 16px;
-            outline: none;
-            background: #1e1e1e;
-            color: white;
-        }
-        .send-button {
-            background: #6200ea;
-            color: white;
-            border: none;
-            padding: 0 15px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        .send-button:hover {
-            background: #3700b3;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chaotische KI</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
-<div class="chat-container">
-    <div class="chat-header">Chaotischer Geschichtenerzähler</div>
-    <div class="chat-messages" id="chatMessages"></div>
-    <div class="chat-input-container">
-        <input type="text" class="chat-input" id="chatInput" placeholder="Schreibe etwas...">
-        <button class="send-button" id="sendButton">Senden</button>
+  <div class="chat-container">
+    <h1>Chaotische KI</h1>
+    <div id="chat-window">
+      <div id="chat-output"></div>
     </div>
-</div>
-
-<script>
-    // Quellen für Geschichtenbausteine
-    const words = ["Käse", "Mond", "Explosion", "Einhorn", "Banane", "42", "Chaos", "Wolke"];
-    const phrases = [
-        "Es war einmal ein", "Plötzlich erschien ein", "Dann passierte etwas Unfassbares:", 
-        "Keiner hätte gedacht, dass", "Am Ende blieb nur noch", "So endete die Geschichte von"
-    ];
-    const emojis = ["🌈", "🔥", "🌀", "🌙", "⭐", "⚡", "🍌", "🧀", "💥", "🦄"];
-    
-    // HTML-Elemente
-    const chatMessages = document.getElementById("chatMessages");
-    const chatInput = document.getElementById("chatInput");
-    const sendButton = document.getElementById("sendButton");
-
-    // Zufallsfunktion
-    function getRandomElement(arr) {
-        return arr[Math.floor(Math.random() * arr.length)];
-    }
-
-    // Funktion, um eine chaotische Geschichte zu generieren
-    function generateChaoticStory() {
-        const storyLength = Math.floor(Math.random() * 5) + 3; // 3 bis 7 Sätze
-        let story = "";
-
-        for (let i = 0; i < storyLength; i++) {
-            const randomPhrase = getRandomElement(phrases);
-            const randomWord = getRandomElement(words);
-            const randomEmoji = getRandomElement(emojis);
-            story += `${randomPhrase} ${randomWord} ${randomEmoji}. `;
-        }
-
-        // Füge eine chaotische Wendung am Ende hinzu
-        story += `Und dann verschwand alles in einem Meer von ${getRandomElement(words)} ${getRandomElement(emojis)}.`;
-        return story;
-    }
-
-    // Funktion, um eine Nachricht hinzuzufügen
-    function addMessage(text, sender) {
-        const messageElement = document.createElement("div");
-        messageElement.classList.add("chat-message", sender);
-        messageElement.textContent = text;
-        chatMessages.appendChild(messageElement);
-        chatMessages.scrollTop = chatMessages.scrollHeight; // Scroll nach unten
-    }
-
-    // Klick-Event für den "Senden"-Button
-    sendButton.addEventListener("click", () => {
-        const userMessage = chatInput.value.trim();
-        if (userMessage === "") return; // Leere Eingaben ignorieren
-        addMessage(userMessage, "user"); // Nutzer-Nachricht hinzufügen
-
-        // Bot generiert eine chaotische Geschichte
-        setTimeout(() => {
-            const chaoticStory = generateChaoticStory();
-            addMessage(chaoticStory, "bot");
-        }, 500); // Verzögerung von 500ms für eine realistischere Interaktion
-
-        chatInput.value = ""; // Eingabefeld zurücksetzen
-    });
-
-    // Enter-Taste zum Senden nutzen
-    chatInput.addEventListener("keydown", (event) => {
-        if (event.key === "Enter") {
-            sendButton.click();
-        }
-    });
-</script>
-
+    <div class="input-container">
+      <input type="text" id="user-input" placeholder="Frag mich irgendwas...">
+      <button id="send-btn">Senden</button>
+    </div>
+  </div>
+  <script src="script.js"></script>
 </body>
 </html>
