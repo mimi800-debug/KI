@@ -90,3 +90,19 @@ h1 {
 #send-btn:hover {
   background: #357abd;
 }
+
+#save-chat-btn {
+  margin-top: 10px;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 15px;
+  background: #28a745;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+#save-chat-btn:hover {
+  background: #218838;
+}
