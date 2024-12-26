@@ -13,15 +13,20 @@ const responses = {
   ]
 };
 
+// Chat-Historie speichern
+let chatHistory = [];
+
 // Ereignislistener für den "Senden"-Button
 document.getElementById("send-btn").addEventListener("click", handleUserInput);
+document.getElementById("save-chat-btn").addEventListener("click", saveChat);
 
 // Funktion zum Verarbeiten der Benutzereingabe
 function handleUserInput() {
-  const userInput = document.getElementById("user-input").value.trim().toLowerCase();
+  const userInput = document.getElementById("user-input").value.trim();
   if (userInput === "") return;
 
   appendMessage(userInput, "user");
+  chatHistory.push(`Du: ${userInput}`);
   generateBotReply(userInput);
   document.getElementById("user-input").value = ""; // Leert das Eingabefeld
 }
@@ -39,8 +44,9 @@ function appendMessage(text, sender) {
 // Funktion zur Bot-Antwort basierend auf Eingaben
 function generateBotReply(input) {
   let reply;
+  const lowerInput = input.toLowerCase();
   for (const key in responses) {
-    if (input.includes(key)) {
+    if (lowerInput.includes(key)) {
       reply = Array.isArray(responses[key])
         ? responses[key][Math.floor(Math.random() * responses[key].length)]
         : responses[key];
@@ -53,5 +59,19 @@ function generateBotReply(input) {
     reply = responses.standard[Math.floor(Math.random() * responses.standard.length)];
   }
 
-  setTimeout(() => appendMessage(reply, "bot"), 1000);
+  setTimeout(() => {
+    appendMessage(reply, "bot");
+    chatHistory.push(`Bot: ${reply}`);
+  }, 1000);
+}
+
+// Funktion zum Speichern des Chats
+function saveChat() {
+  const chatBlob = new Blob([chatHistory.join("\n")], { type: "text/plain" });
+  const chatUrl = URL.createObjectURL(chatBlob);
+
+  const downloadLink = document.createElement("a");
+  downloadLink.href = chatUrl;
+  downloadLink.download = "chat.txt";
+  downloadLink.click();
 }
