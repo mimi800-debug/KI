@@ -8,6 +8,7 @@ body {
   align-items: center;
   height: 100vh;
   background: #f9f9f9;
+  overflow: hidden;
 }
 
 .chat-container {
@@ -15,22 +16,23 @@ body {
   border-radius: 15px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   padding: 20px;
-  width: 90%;
+  width: 100%;
   max-width: 500px;
-  text-align: center;
+  height: 90%;
   display: flex;
   flex-direction: column;
 }
 
 h1 {
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   color: #4a90e2;
+  text-align: center;
 }
 
 #chat-window {
   background: #e9ecef;
   border-radius: 10px;
-  height: 300px;
+  height: 70%;
   overflow-y: auto;
   padding: 10px;
   margin-bottom: 15px;
@@ -69,14 +71,15 @@ h1 {
 
 #user-input {
   flex: 1;
-  padding: 10px;
+  padding: 15px;
   border: 1px solid #ced4da;
   border-radius: 15px;
   outline: none;
+  font-size: 16px;
 }
 
 #send-btn {
-  padding: 10px 15px;
+  padding: 15px;
   border: none;
   border-radius: 15px;
   background: #4a90e2;
@@ -84,7 +87,7 @@ h1 {
   font-weight: bold;
   cursor: pointer;
   margin-left: 10px;
-  transition: background 0.3s;
+  font-size: 16px;
 }
 
 #send-btn:hover {
@@ -93,7 +96,7 @@ h1 {
 
 #save-chat-btn {
   margin-top: 10px;
-  padding: 10px 15px;
+  padding: 15px;
   border: none;
   border-radius: 15px;
   background: #28a745;
@@ -105,4 +108,23 @@ h1 {
 
 #save-chat-btn:hover {
   background: #218838;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .chat-container {
+    width: 100%;
+    height: 100vh;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  #chat-window {
+    height: 75%;
+  }
+
+  #save-chat-btn {
+    font-size: 14px;
+    padding: 10px;
+  }
 }
