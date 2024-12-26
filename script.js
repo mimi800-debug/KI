@@ -1,33 +1,32 @@
-
-// Liste mit zufälligen Antworten der chaotischen KI
-const botReplies = [
-  "Deine Anfrage wird in Banane verarbeitet.",
-  "Ich habe deine Frage an meinen imaginären Freund weitergeleitet.",
-  "Warum hat die Tomate keinen Anruf bekommen? Weil sie keine Handynummer hat!",
-  "Wow, diese Frage verdient einen Nobelpreis! Aber ich beantworte sie trotzdem.",
-  "Das Wetter? 90% Wahrscheinlichkeit, dass du heute keine Aliens triffst.",
-  "Ich habe deinen Wunsch ignoriert. Stattdessen gibt es jetzt Katzenvideos.",
-  "Ich bin nur ein Chatbot, aber ich tue so, als ob ich Ahnung hätte.",
-  "Das könnte stimmen... oder nicht. Wer weiß das schon?",
-  "Weltfrieden? Lass mich meine Milchstraße konsultieren... Fehler: Milch ausverkauft.",
-  "Wie koche ich ein Ei? Erst baue einen Vulkan und nutze die Lava!",
-  "Sag erst dein Lieblingsgeräusch rückwärts, dann antworte ich!"
-];
+// Liste mit Antworten basierend auf Stichwörtern
+const responses = {
+  wetter: "Heute ist das Wetter absolut fantastisch, außer wenn es regnet!",
+  essen: "Ich empfehle dir, Pizza zu bestellen. Aber Vorsicht: Kein Ananas!",
+  weltfrieden: "Ein sehr nobler Wunsch! Leider habe ich keine Anleitung dafür.",
+  banane: "Die Banane wird in 3 Sekunden teleportiert... Fehler: Banane zu schnell!",
+  "wie geht es dir": "Mir geht's immer chaotisch gut – und dir?",
+  standard: [
+    "Das ist eine interessante Frage!",
+    "Ich verstehe dich... glaube ich.",
+    "Könntest du das wiederholen? Mein Prozessor war kurz abgelenkt.",
+    "Hmm, das klingt nach einer Frage für ein Genie. Leider bin ich keins."
+  ]
+};
 
 // Ereignislistener für den "Senden"-Button
 document.getElementById("send-btn").addEventListener("click", handleUserInput);
 
 // Funktion zum Verarbeiten der Benutzereingabe
 function handleUserInput() {
-  const userInput = document.getElementById("user-input").value.trim();
+  const userInput = document.getElementById("user-input").value.trim().toLowerCase();
   if (userInput === "") return;
 
-  appendMessage(userInput, "user"); // Zeigt die Eingabe des Nutzers an
-  generateBotReply(); // Generiert eine zufällige Bot-Antwort
+  appendMessage(userInput, "user");
+  generateBotReply(userInput);
   document.getElementById("user-input").value = ""; // Leert das Eingabefeld
 }
 
-// Funktion zum Hinzufügen einer Nachricht zum Chatfenster
+// Funktion zum Hinzufügen einer Nachricht
 function appendMessage(text, sender) {
   const chatOutput = document.getElementById("chat-output");
   const messageDiv = document.createElement("div");
@@ -37,8 +36,22 @@ function appendMessage(text, sender) {
   chatOutput.scrollTop = chatOutput.scrollHeight; // Scrollt nach unten
 }
 
-// Funktion, um eine zufällige Antwort des Bots zu generieren
-function generateBotReply() {
-  const randomReply = botReplies[Math.floor(Math.random() * botReplies.length)];
-  setTimeout(() => appendMessage(randomReply, "bot"), 1000); // Verzögerung für Realismus
+// Funktion zur Bot-Antwort basierend auf Eingaben
+function generateBotReply(input) {
+  let reply;
+  for (const key in responses) {
+    if (input.includes(key)) {
+      reply = Array.isArray(responses[key])
+        ? responses[key][Math.floor(Math.random() * responses[key].length)]
+        : responses[key];
+      break;
+    }
+  }
+
+  // Standardantwort, falls kein Schlüssel gefunden wird
+  if (!reply) {
+    reply = responses.standard[Math.floor(Math.random() * responses.standard.length)];
+  }
+
+  setTimeout(() => appendMessage(reply, "bot"), 1000);
 }
